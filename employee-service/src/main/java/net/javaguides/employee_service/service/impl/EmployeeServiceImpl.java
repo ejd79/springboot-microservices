@@ -3,11 +3,14 @@ package net.javaguides.employee_service.service.impl;
 import lombok.AllArgsConstructor;
 import net.javaguides.employee_service.dto.EmployeeDto;
 import net.javaguides.employee_service.entity.Employee;
+import net.javaguides.employee_service.exception.EmailAlreadyExistsException;
 import net.javaguides.employee_service.exception.ResourceNotFoundException;
 import net.javaguides.employee_service.repository.EmployeeRepository;
 import net.javaguides.employee_service.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +22,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
+
+        // check if already exists employeeDto.email
+       Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employeeDto.getEmail());
+       if (optionalEmployee.isPresent()){
+           throw new EmailAlreadyExistsException("Email already exist for Employee");
+       }
 
 //        Employee employee = new Employee(
 //                employeeDto.getId(),
