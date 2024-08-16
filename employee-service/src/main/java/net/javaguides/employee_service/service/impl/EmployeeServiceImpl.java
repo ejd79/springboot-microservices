@@ -8,11 +8,13 @@ import net.javaguides.employee_service.entity.Employee;
 import net.javaguides.employee_service.exception.EmailAlreadyExistsException;
 import net.javaguides.employee_service.exception.ResourceNotFoundException;
 import net.javaguides.employee_service.repository.EmployeeRepository;
+import net.javaguides.employee_service.service.APIClient;
 import net.javaguides.employee_service.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -20,7 +22,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private RestTemplate restTemplate;
+    //    private RestTemplate restTemplate;
+//    private WebClient webClient;
+    private APIClient apiClient;
+
     private ModelMapper modelMapper;
     private EmployeeRepository employeeRepository;
 
@@ -28,10 +33,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
 
         // check if already exists employeeDto.email
-       Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employeeDto.getEmail());
-       if (optionalEmployee.isPresent()){
-           throw new EmailAlreadyExistsException("Email already exist for Employee");
-       }
+        Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employeeDto.getEmail());
+        if (optionalEmployee.isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exist for Employee");
+        }
 
 //        Employee employee = new Employee(
 //                employeeDto.getId(),
@@ -57,11 +62,19 @@ public class EmployeeServiceImpl implements EmployeeService {
                 () -> new ResourceNotFoundException("Employee", "id", employeeId)
         );
 
-        // testing Rest Template
-        ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity("http://localhost:8080/api/departments/" + savedEmployee.getDepartmentCode(),
-                DepartmentDto.class);
-        DepartmentDto departmentDto = responseEntity.getBody();
+        // using Rest Template
+//        ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity("http://localhost:8080/api/departments/" + savedEmployee.getDepartmentCode(),
+//                DepartmentDto.class);
+//        DepartmentDto departmentDto = responseEntity.getBody();
 
+        // using WebClient
+//        DepartmentDto departmentDto = webClient.get()
+//                .uri("http://localhost:8080/api/departments/" + savedEmployee.getDepartmentCode())
+//                .retrieve()
+//                .bodyToMono(DepartmentDto.class)
+//                .block();
+        // using OpenFeign Client
+        DepartmentDto departmentDto = apiClient.getDepartment(savedEmployee.getDepartmentCode());
 
 //        EmployeeDto employeeDto = new EmployeeDto(savedEmployee.getId(), savedEmployee.getFirstName(),
 //                savedEmployee.getLastName(), savedEmployee.getEmail());
