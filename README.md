@@ -7,3 +7,9 @@ docker run --rm -it --name zipkin -p 9411:9411 openzipkin/zipkin
 # TODO 
 ### Check Tracing Code: 
 https://github.com/RameshMF/springboot-microservices/tree/main/v3/springboot-microservices
+
+# Circuit Breaker Pattern implementation
+## Add the Spring Cloud 2 Starter of Resilience4j to your compile dependency.
+The Spring Cloud 2 Starter allows you to use Spring Cloud Config as a central place to manage and refresh properties 
+at runtime.
+
