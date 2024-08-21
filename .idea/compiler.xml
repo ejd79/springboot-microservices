@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="config-server" />
+        <module name="organization-service" />
         <module name="department-service" />
         <module name="service-registry" />
         <module name="employee-service" />
@@ -21,6 +22,7 @@
       <module name="config-server" options="-parameters" />
       <module name="department-service" options="-parameters" />
       <module name="employee-service" options="-parameters" />
+      <module name="organization-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />
     </option>
   </component>
