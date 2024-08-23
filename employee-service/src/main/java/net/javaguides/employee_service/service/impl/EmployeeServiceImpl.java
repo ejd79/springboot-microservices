@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import net.javaguides.employee_service.dto.APIResponseDto;
 import net.javaguides.employee_service.dto.DepartmentDto;
 import net.javaguides.employee_service.dto.EmployeeDto;
+import net.javaguides.employee_service.dto.OrganizationDto;
 import net.javaguides.employee_service.entity.Employee;
 import net.javaguides.employee_service.exception.EmailAlreadyExistsException;
 import net.javaguides.employee_service.exception.ResourceNotFoundException;
@@ -87,6 +88,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         // using OpenFeign Client
 //        DepartmentDto departmentDto = apiClient.getDepartment(savedEmployee.getDepartmentCode());
 
+        OrganizationDto organizationDto = webClient.get()
+                .uri("http://localhost:8083/api/organizations/" + savedEmployee.getOrganizationCode())
+                .retrieve()
+                .bodyToMono(OrganizationDto.class)
+                .block();
+
+
 //        EmployeeDto employeeDto = new EmployeeDto(savedEmployee.getId(), savedEmployee.getFirstName(),
 //                savedEmployee.getLastName(), savedEmployee.getEmail());
 
@@ -95,6 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployeeDto(employeeDto);
         apiResponseDto.setDepartmentDto(departmentDto);
+        apiResponseDto.setOrganizationDto(organizationDto);
 
         return apiResponseDto;
     }
@@ -113,11 +122,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         departmentDto.setDepartmentCode("RD001");
         departmentDto.setDepartmentDescription("Research and Development department");
 
+        OrganizationDto organizationDto = new OrganizationDto();
+        organizationDto.setOrganizationCode("ORG_Default");
+        organizationDto.setOrganizationDescription("Organización por defecto");
+        organizationDto.setOrganizationName("Default Organization");
+
         EmployeeDto employeeDto = modelMapper.map(savedEmployee, EmployeeDto.class);
 
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployeeDto(employeeDto);
         apiResponseDto.setDepartmentDto(departmentDto);
+        apiResponseDto.setOrganizationDto(organizationDto);
         return apiResponseDto;
     }
 }
