@@ -13,3 +13,8 @@ https://github.com/RameshMF/springboot-microservices/tree/main/v3/springboot-mic
 The Spring Cloud 2 Starter allows you to use Spring Cloud Config as a central place to manage and refresh properties 
 at runtime.
 
+
+#TIPS
+## Convert Yaml to .properties files
+https://mageddo.com/tools/yaml-converter
+
