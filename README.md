@@ -18,3 +18,14 @@ at runtime.
 ## Convert Yaml to .properties files
 https://mageddo.com/tools/yaml-converter
 
+# OpenAPI (Swagger)
+
+## http://localhost:8080/swagger-ui/index.html
+
+http://localhost:8080/v3/api-docs  : genera doc en formato json  
+
+Desde la interfaz de Swagger puedes probar los servicios
+
+Use **@OpenAPIDefinition** 
+
+
